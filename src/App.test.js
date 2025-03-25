@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders home page', () => {
-  render(<App />); // Render the App component directly without wrapping it in a Router
+test('renders loading state', async () => {
+  render(<App />);  // Render the App component
 
-  // Check if some text is rendered to confirm the app is rendering properly
-  expect(screen.getByText(/Loading.../i)).toBeInTheDocument(); // Assuming that 'Loading...' is initially displayed in Home
+  // Use findByText to wait for the "Loading..." text to appear
+  const loadingText = await screen.findByText(/Loading.../i);
+
+  // Assert that the "Loading..." text is in the document
+  expect(loadingText).toBeInTheDocument();
 });
