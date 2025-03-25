@@ -1,0 +1,34 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
+
+jobs:
+  build:
+    working_directory: ~/beforeproject
+    docker:
+      - image: cimg/node:18.20.7
+    steps:
+      - checkout
+      - run:
+          name: Update npm version
+          command: sudo npm install -g npm@10.8.2
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build React app
+          command: npm run build  # This builds the React app for production
+      - save_cache:
+          paths:
+            - ~/.npm
+          key: dependency-cache-{{ checksum "package-lock.json" }}
