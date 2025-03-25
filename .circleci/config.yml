@@ -24,13 +24,15 @@ jobs:
           paths:
             - ~/.npm
           key: dependency-cache-{{ checksum "package-lock.json" }}
-
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - main
+deploy:
+    docker:
+      - image: cimg/node:18.20.7
+    steps:
+      - run:
+          name: deploy-application
+          command: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_PUBLIC_DNS "
+            export SERVER=\"\$SERVER\";
+            export PRIVATE_KEY=\"\$PRIVATE_KEY\";
+            rm -rf BeforeApplication/;
+            git clone https://github.com/lisadavis552/BeforeApplication.git;
+            source BeforeApplication/deploy.sh"
