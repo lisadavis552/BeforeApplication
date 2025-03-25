@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+sudo apt update && sudo apt install nodejs npm
 
-# Stop any existing instance of the application (if it exists)
-pm2 stop example_app || true
+# Stop any existing instance of the application 
+pm2 stop Before_app 
 
 # Change to the project directory
-cd ExampleApplication/
+cd BeforeApplication/
 
 # Install application dependencies
 npm install
