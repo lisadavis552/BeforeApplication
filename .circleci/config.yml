@@ -36,7 +36,7 @@ jobs:
             export SERVER=\"\$SERVER\";
             export PRIVATE_KEY=\"\$PRIVATE_KEY\";
             rm -rf BeforeApplication/;
-            git clone https://github.com/lisavis552/BeforeApplication.git;
+            git clone https://github.com/lisadavis552/BeforeApplication.git;
             source BeforeApplication/deploy.sh"
 
 workflows:
