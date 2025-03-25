@@ -16,7 +16,7 @@ jobs:
           command: npm install
       - run:
           name: Build React app
-          command: npm run build  # This builds the React app for production
+          command: npm run build
       - run:
           name: Run tests
           command: npm run test
@@ -24,15 +24,30 @@ jobs:
           paths:
             - ~/.npm
           key: dependency-cache-{{ checksum "package-lock.json" }}
-deploy:
+
+  deploy:
     docker:
       - image: cimg/node:18.20.7
     steps:
+      - checkout
+      - add_ssh_keys
       - run:
           name: deploy-application
           command: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_PUBLIC_DNS "
             export SERVER=\"\$SERVER\";
             export PRIVATE_KEY=\"\$PRIVATE_KEY\";
             rm -rf BeforeApplication/;
-            git clone https://github.com/lisadavis552/BeforeApplication.git;
+            git clone https://github.com/lisavis552/BeforeApplication.git;
             source BeforeApplication/deploy.sh"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
